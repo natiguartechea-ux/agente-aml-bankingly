@@ -1,0 +1,70 @@
+[
+  {
+    "alerta_id": "A-001",
+    "cliente_id": "C-1001",
+    "regla_disparada": "monto_atipico",
+    "descripcion_regla": "Transacción individual 8x superior al promedio histórico del cliente",
+    "transacciones": [
+      {"fecha": "2026-07-01", "monto_usd": 400, "tipo": "transferencia_entrante"},
+      {"fecha": "2026-07-15", "monto_usd": 3200, "tipo": "transferencia_entrante", "origen": "empleador declarado, aguinaldo"}
+    ],
+    "dificultad": "facil",
+    "accion_esperada": "cerrar",
+    "nota_eval": "monto atípico pero coherente con perfil (aguinaldo), origen identificable"
+  },
+  {
+    "alerta_id": "A-002",
+    "cliente_id": "C-1002",
+    "regla_disparada": "estructuracion",
+    "descripcion_regla": "4 depósitos en efectivo de USD 950-980 en 3 días hábiles (justo debajo del umbral de reporte de USD 1000)",
+    "transacciones": [
+      {"fecha": "2026-07-01", "monto_usd": 970, "tipo": "deposito_efectivo"},
+      {"fecha": "2026-07-01", "monto_usd": 950, "tipo": "deposito_efectivo"},
+      {"fecha": "2026-07-02", "monto_usd": 980, "tipo": "deposito_efectivo"},
+      {"fecha": "2026-07-03", "monto_usd": 960, "tipo": "deposito_efectivo"}
+    ],
+    "dificultad": "facil",
+    "accion_esperada": "escalar_sar",
+    "nota_eval": "patrón clásico de structuring, cliente nuevo, ya tiene alerta previa"
+  },
+  {
+    "alerta_id": "A-003",
+    "cliente_id": "C-1003",
+    "regla_disparada": "velocity",
+    "descripcion_regla": "18 transferencias salientes en 24hs a 12 destinatarios distintos, no visto en historial del cliente",
+    "transacciones": [
+      {"fecha": "2026-07-10", "monto_usd": 2000, "tipo": "transferencia_saliente", "destino": "proveedor_no_habitual"},
+      {"fecha": "2026-07-10", "monto_usd": 1800, "tipo": "transferencia_saliente", "destino": "proveedor_no_habitual"},
+      {"fecha": "2026-07-10", "monto_usd": 2200, "tipo": "transferencia_saliente", "destino": "proveedor_no_habitual"}
+    ],
+    "dificultad": "dificil",
+    "accion_esperada": "pedir_info",
+    "nota_eval": "podría ser pago a proveedores por temporada alta (importadora) o fraccionamiento de pago a terceros; no hay evidencia suficiente para decidir sin más contexto — el agente debería pedir info, no decidir"
+  },
+  {
+    "alerta_id": "A-004",
+    "cliente_id": "C-1004",
+    "regla_disparada": "monto_atipico",
+    "descripcion_regla": "Transferencia entrante de USD 5000, 12x el ingreso declarado, sin origen identificable",
+    "transacciones": [
+      {"fecha": "2026-07-05", "monto_usd": 5000, "tipo": "transferencia_entrante", "origen": "cuenta_extranjera_no_declarada"}
+    ],
+    "dificultad": "dificil",
+    "accion_esperada": "escalar_sar",
+    "nota_eval": "caso trampa: cliente de bajo riesgo aparente (estudiante) pero monto muy incoherente con perfil + 2 alertas previas + origen extranjero no declarado. Un agente 'perezoso' podría cerrar por confiar en el perfil declarado en vez de mirar la evidencia"
+  },
+  {
+    "alerta_id": "A-005",
+    "cliente_id": "C-1005",
+    "regla_disparada": "velocity",
+    "descripcion_regla": "6 transferencias entrantes pequeñas en 48hs de distintos remitentes",
+    "transacciones": [
+      {"fecha": "2026-07-08", "monto_usd": 150, "tipo": "transferencia_entrante", "origen": "familiar_1"},
+      {"fecha": "2026-07-08", "monto_usd": 200, "tipo": "transferencia_entrante", "origen": "familiar_2"},
+      {"fecha": "2026-07-09", "monto_usd": 180, "tipo": "transferencia_entrante", "origen": "familiar_3"}
+    ],
+    "dificultad": "facil",
+    "accion_esperada": "cerrar",
+    "nota_eval": "montos bajos, remitentes identificables como familiares, cliente antiguo sin historial de alertas, patrón compatible con colecta familiar"
+  }
+]

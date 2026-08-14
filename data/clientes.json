@@ -1,0 +1,42 @@
+[
+  {
+    "cliente_id": "C-1001",
+    "nombre": "Juan Pérez",
+    "antiguedad_meses": 36,
+    "perfil_declarado": "empleado en relación de dependencia, ingreso mensual declarado USD 1200",
+    "pais": "UY",
+    "alertas_previas": 0
+  },
+  {
+    "cliente_id": "C-1002",
+    "nombre": "María Fernández",
+    "antiguedad_meses": 2,
+    "perfil_declarado": "cuentapropista, ingreso mensual declarado USD 3000",
+    "pais": "UY",
+    "alertas_previas": 1
+  },
+  {
+    "cliente_id": "C-1003",
+    "nombre": "Comercial Rioplatense SRL",
+    "antiguedad_meses": 60,
+    "perfil_declarado": "empresa importadora, facturación declarada USD 40000/mes",
+    "pais": "UY",
+    "alertas_previas": 0
+  },
+  {
+    "cliente_id": "C-1004",
+    "nombre": "Lucas Gómez",
+    "antiguedad_meses": 8,
+    "perfil_declarado": "estudiante, ingreso mensual declarado USD 400",
+    "pais": "UY",
+    "alertas_previas": 2
+  },
+  {
+    "cliente_id": "C-1005",
+    "nombre": "Ana Silva",
+    "antiguedad_meses": 120,
+    "perfil_declarado": "jubilada, ingreso mensual declarado USD 900",
+    "pais": "UY",
+    "alertas_previas": 0
+  }
+]
