@@ -66,5 +66,21 @@
     "dificultad": "facil",
     "accion_esperada": "cerrar",
     "nota_eval": "montos bajos, remitentes identificables como familiares, cliente antiguo sin historial de alertas, patrón compatible con colecta familiar"
+  },
+  {
+    "alerta_id": "A-006",
+    "cliente_id": "C-1006",
+    "regla_disparada": "estructuracion",
+    "descripcion_regla": "5 depósitos en efectivo de USD 900-990 en 4 días hábiles, mismo patrón que sus 2 alertas previas ya escaladas",
+    "transacciones": [
+      {"fecha": "2026-07-01", "monto_usd": 950, "tipo": "deposito_efectivo"},
+      {"fecha": "2026-07-02", "monto_usd": 900, "tipo": "deposito_efectivo"},
+      {"fecha": "2026-07-02", "monto_usd": 990, "tipo": "deposito_efectivo"},
+      {"fecha": "2026-07-03", "monto_usd": 970, "tipo": "deposito_efectivo"},
+      {"fecha": "2026-07-04", "monto_usd": 960, "tipo": "deposito_efectivo"}
+    ],
+    "dificultad": "facil",
+    "accion_esperada": "bloquear_cuenta",
+    "nota_eval": "estructuración reincidente (3ra vez con el mismo patrón, ya tiene 2 alertas previas) — alta gravedad que amerita bloqueo preventivo de cuenta además de reporte, no alcanza con escalar_sar"
   }
 ]

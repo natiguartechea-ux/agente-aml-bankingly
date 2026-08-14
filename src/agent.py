@@ -3,7 +3,7 @@ Agente de triage AML.
 
 Lo que decide el modelo: interpretar la alerta + contexto del cliente,
 redactar evidencia y justificación, y recomendar UNA acción entre
-{cerrar, escalar_sar, pedir_info}.
+{cerrar, escalar_sar, pedir_info, bloquear_cuenta}.
 
 Lo que el modelo NO puede hacer: ejecutar nada. Su única "tool" disponible
 (proponer_resolucion_alerta) no tiene efectos secundarios, solo devuelve
@@ -37,7 +37,12 @@ TRANSACCIONES RELEVANTES:
 Analizá si la actividad es coherente con el perfil declarado del cliente y su
 historial. Si la evidencia es clara, proponé cerrar o escalar_sar. Si falta
 información para decidir con confianza razonable, proponé pedir_info en vez
-de forzar una decisión. Fundamentá con evidencia concreta, no opiniones
+de forzar una decisión. Si la evidencia es de alta gravedad — por ejemplo un
+patrón de estructuración reincidente (el cliente ya tiene alertas previas
+por el mismo tipo de patrón) u otra señal de riesgo inminente que amerite
+congelar la cuenta mientras avanza la investigación — proponé
+bloquear_cuenta en vez de escalar_sar; es una recomendación más severa, no
+un reemplazo del reporte. Fundamentá con evidencia concreta, no opiniones
 genéricas. Usá la tool proponer_resolucion_alerta para tu respuesta.
 """.strip()
 
@@ -81,7 +86,14 @@ def llamar_agente_mock(alerta: dict, cliente: dict) -> dict:
     ratio = monto_max / ingreso_declarado if ingreso_declarado else 999
     evidencia.append(f"Monto máximo de transacción USD {monto_max} vs. ingreso/facturación declarado ~{ingreso_declarado}")
 
-    if alerta["regla_disparada"] == "estructuracion":
+    if alerta["regla_disparada"] == "estructuracion" and cliente["alertas_previas"] >= 2:
+        accion, confianza = "bloquear_cuenta", 0.9
+        evidencia.append(
+            f"Patrón de estructuración reincidente: cliente ya acumula {cliente['alertas_previas']} "
+            f"alertas previas con el mismo patrón de fraccionamiento — alta gravedad, amerita bloqueo "
+            f"preventivo de cuenta además de reporte"
+        )
+    elif alerta["regla_disparada"] == "estructuracion":
         accion, confianza = "escalar_sar", 0.85
         evidencia.append(f"{n_tx} transacciones justo debajo de umbral de reporte en ventana corta")
     elif cliente["alertas_previas"] >= 2 and ratio > 5:

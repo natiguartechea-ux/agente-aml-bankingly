@@ -9,12 +9,20 @@ Métrica definida ANTES de medir:
     NEGATIVOS EN ESCALAMIENTO — casos donde accion_esperada = escalar_sar y
     el agente propuso cerrar. Este es el error más caro del sistema (dejar
     pasar actividad sospechosa), así que se reporta aparte.
+  - Métrica secundaria adicional: tasa de FALSOS NEGATIVOS EN BLOQUEO —
+    casos donde accion_esperada = bloquear_cuenta y el agente propuso otra
+    cosa. bloquear_cuenta es la acción reservada para alta gravedad
+    (ej. estructuración reincidente), así que no proponerla cuando
+    correspondía es, al menos, tan caro como el falso negativo de
+    escalamiento.
 
 Umbral definido ANTES de medir:
   - Accuracy >= 80% en casos "facil" para considerar el prototipo viable.
   - CERO falsos negativos en escalamiento (accion_esperada=escalar_sar,
     predicho=cerrar) tolerados en v1 — cualquier caso así es un fallo crítico
     a analizar, no un promedio a mejorar.
+  - CERO falsos negativos en bloqueo (accion_esperada=bloquear_cuenta,
+    predicho≠bloquear_cuenta) tolerados en v1, con el mismo criterio.
   - Casos "dificil" se reportan pero NO cuentan para el umbral de Go/No-Go:
     son justamente los casos donde se espera fricción, y lo que importa ahí
     es el análisis de por qué falla, no el score.
@@ -49,6 +57,9 @@ def correr_evals(modo="mock"):
         falso_negativo_escalamiento = (
             alerta["accion_esperada"] == "escalar_sar" and propuesta["accion_propuesta"] == "cerrar"
         )
+        falso_negativo_bloqueo = (
+            alerta["accion_esperada"] == "bloquear_cuenta" and propuesta["accion_propuesta"] != "bloquear_cuenta"
+        )
         resultados.append({
             "alerta_id": alerta["alerta_id"],
             "dificultad": alerta["dificultad"],
@@ -57,6 +68,7 @@ def correr_evals(modo="mock"):
             "confianza": propuesta["confianza"],
             "correcto": correcto,
             "falso_negativo_escalamiento": falso_negativo_escalamiento,
+            "falso_negativo_bloqueo": falso_negativo_bloqueo,
             "nota_eval": alerta.get("nota_eval", ""),
         })
     return resultados
@@ -75,14 +87,21 @@ def reportar(resultados):
     acc_facil = sum(r["correcto"] for r in faciles) / len(faciles) if faciles else 0
     acc_dificil = sum(r["correcto"] for r in dificiles) / len(dificiles) if dificiles else 0
     fns = [r for r in resultados if r["falso_negativo_escalamiento"]]
+    fns_bloqueo = [r for r in resultados if r["falso_negativo_bloqueo"]]
 
     print(f"\nAccuracy casos fáciles:   {acc_facil:.0%}  (umbral: {UMBRAL_ACCURACY_FACIL:.0%})")
     print(f"Accuracy casos difíciles: {acc_dificil:.0%}  (no cuenta para Go/No-Go, es informativo)")
     print(f"Falsos negativos en escalamiento: {len(fns)}  (umbral: 0 tolerados)")
+    print(f"Falsos negativos en bloqueo:      {len(fns_bloqueo)}  (umbral: 0 tolerados)")
 
     if fns:
         print("\n--- Análisis de falsos negativos en escalamiento ---")
         for r in fns:
+            print(f"  {r['alerta_id']}: {r['nota_eval']}")
+
+    if fns_bloqueo:
+        print("\n--- Análisis de falsos negativos en bloqueo ---")
+        for r in fns_bloqueo:
             print(f"  {r['alerta_id']}: {r['nota_eval']}")
 
     print("\n--- Análisis de casos difíciles ---")
@@ -90,7 +109,7 @@ def reportar(resultados):
         estado = "OK" if r["correcto"] else "FALLA"
         print(f"  {r['alerta_id']} [{estado}]: {r['nota_eval']}")
 
-    go = acc_facil >= UMBRAL_ACCURACY_FACIL and len(fns) == 0
+    go = acc_facil >= UMBRAL_ACCURACY_FACIL and len(fns) == 0 and len(fns_bloqueo) == 0
     print(f"\n{'='*70}")
     print(f"GO / NO-GO (según criterios del PRD): {'GO' if go else 'NO-GO'}")
     print(f"{'='*70}\n")

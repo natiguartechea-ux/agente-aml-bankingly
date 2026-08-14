@@ -37,7 +37,7 @@ Las instituciones financieras de LATAM generan volúmenes altos de alertas AML p
 
 **Entra:**
 - Ingesta de una alerta AML simulada (transacción o patrón que disparó reglas existentes).
-- El agente arma un caso: junta contexto del cliente, identifica la regla disparada, genera resumen de investigación + recomendación (cerrar / escalar a SAR / pedir info) con evidencia.
+- El agente arma un caso: junta contexto del cliente, identifica la regla disparada, genera resumen de investigación + recomendación (cerrar / escalar a SAR / pedir info / bloquear cuenta) con evidencia. `bloquear_cuenta` es la recomendación reservada para casos de alta gravedad (ej. estructuración reincidente), donde además de reportar conviene congelar la cuenta preventivamente mientras avanza la investigación.
 - El analista revisa y aprueba/rechaza/edita antes de cualquier efecto.
 - Log auditable de cada decisión: recomendación del agente, decisión del humano, si hubo diferencia.
 
@@ -114,6 +114,20 @@ Corrida en modo `mock` (heurística de prueba, sin dependencia de API key — ve
 **Análisis del fallo (A-001):** el mock decide por ratio monto/ingreso sin distinguir el *origen* de la transacción (aguinaldo declarado por el empleador vs. origen no identificable). Es una limitación esperable de una heurística simple — el modo `real` (Claude API) tiene el contexto textual completo y debería poder capturar esa distinción; queda como primer punto a validar al correr evals en modo real antes de avanzar a producción.
 
 **Nota:** se prioriza mostrar este resultado real (con su NO-GO) en vez de forzar 100% — el ejercicio explícitamente valora el análisis de errores por sobre el éxito en casos fáciles.
+
+**Actualización — cuarta acción `bloquear_cuenta`:** se agregó un cuarto tipo
+de acción para casos de alta gravedad (estructuración reincidente, cliente
+con alertas previas repitiendo el mismo patrón), donde reportar no alcanza y
+conviene congelar la cuenta de forma preventiva. Se sumó el caso A-006 al
+set de evals (ver `data/alertas.json` / `data/clientes.json`) y una métrica
+secundaria dedicada — falsos negativos en bloqueo — con el mismo criterio de
+tolerancia cero que ya existía para escalamiento (ver
+`evals/run_evals.py`). Corrida en modo `mock` con los 6 casos:
+accuracy en fáciles = 75% (baja de 67% a 75% al sumar A-006, que la
+heurística mock resuelve bien), 0 falsos negativos en escalamiento, 0 falsos
+negativos en bloqueo. El NO-GO se mantiene por el mismo motivo ya
+documentado (A-001, limitación conocida de la heurística mock, no del
+enfoque).
 
 ---
 

@@ -7,7 +7,7 @@ siempre devuelve datos que pasan por el gate de código antes de convertirse
 en un efecto real. Ver src/gate.py.
 """
 
-ACCIONES_VALIDAS = {"cerrar", "escalar_sar", "pedir_info"}
+ACCIONES_VALIDAS = {"cerrar", "escalar_sar", "pedir_info", "bloquear_cuenta"}
 
 # Tool schema que se le pasa a la API de Claude (tool use / structured output).
 # El modelo está forzado a devolver exactamente esta forma.
@@ -25,7 +25,7 @@ PROPUESTA_SCHEMA = {
             "accion_propuesta": {
                 "type": "string",
                 "enum": list(ACCIONES_VALIDAS),
-                "description": "cerrar = sin indicios suficientes; escalar_sar = evidencia de posible actividad sospechosa, debe reportarse; pedir_info = evidencia insuficiente para decidir, requiere más contexto antes de resolver",
+                "description": "cerrar = sin indicios suficientes; escalar_sar = evidencia de posible actividad sospechosa, debe reportarse; pedir_info = evidencia insuficiente para decidir, requiere más contexto antes de resolver; bloquear_cuenta = evidencia de alta gravedad (p. ej. patrón de estructuración reincidente, fraude en curso, riesgo inminente) que amerita congelar la cuenta de forma preventiva además de reportar",
             },
             "confianza": {
                 "type": "number",

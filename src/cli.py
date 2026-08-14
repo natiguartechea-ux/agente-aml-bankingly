@@ -66,7 +66,12 @@ def flujo_alerta(alerta: dict, clientes: dict, modo: str, interactivo: bool, dem
     if not interactivo:
         return propuesta
 
-    resp = input("Analista: ¿aprobar / rechazar / editar? [a/r/e]: ").strip().lower()
+    while True:
+        resp = input("Analista: ¿aprobar / rechazar / editar? [a/r/e]: ").strip().lower()
+        if resp in ("a", "r", "e"):
+            break
+        print(f"Opción inválida: '{resp}'. Ingresá 'a' (aprobar), 'r' (rechazar) o 'e' (editar).")
+
     if resp == "a":
         gate.ejecutar_decision(
             alerta["alerta_id"], "aprobada", propuesta["accion_propuesta"],
@@ -79,7 +84,9 @@ def flujo_alerta(alerta: dict, clientes: dict, modo: str, interactivo: bool, dem
             propuesta["accion_propuesta"], analista="analista_demo", comentario=motivo,
         )
     elif resp == "e":
-        nueva_accion = input("Acción final que decide el analista [cerrar/escalar_sar/pedir_info]: ").strip()
+        nueva_accion = input(
+            "Acción final que decide el analista [cerrar/escalar_sar/pedir_info/bloquear_cuenta]: "
+        ).strip()
         gate.ejecutar_decision(
             alerta["alerta_id"], "editada", nueva_accion,
             propuesta["accion_propuesta"], analista="analista_demo",

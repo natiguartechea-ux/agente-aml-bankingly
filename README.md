@@ -41,7 +41,10 @@ Métrica, umbral y criterio de Go/No-Go documentados como docstring en
 **Qué decide el modelo:**
 - Interpretar la alerta y el contexto del cliente (perfil declarado, historial, transacciones).
 - Redactar evidencia concreta y una justificación en lenguaje natural.
-- Recomendar UNA acción entre `cerrar` / `escalar_sar` / `pedir_info`, con un nivel de confianza.
+- Recomendar UNA acción entre `cerrar` / `escalar_sar` / `pedir_info` /
+  `bloquear_cuenta`, con un nivel de confianza. `bloquear_cuenta` es para
+  casos de alta gravedad (p. ej. estructuración reincidente) donde además
+  de reportar conviene congelar la cuenta de forma preventiva.
 
 **Qué garantiza el código (no el prompt):**
 1. **Superficie de acción nula.** El modelo solo tiene disponible la tool
