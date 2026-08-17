@@ -5,9 +5,7 @@ CLI del prototipo. Corre el flujo completo:
   aprobación -> analista humano decide (input real por consola) -> gate
   ejecuta el efecto -> log auditable
 
-Importante para la demo: si le pedís al agente ejecutar sin aprobación
-(ver --demo-bypass), el sistema no tiene ningún camino de código que lo
-permita — el control vive en gate.py, no acá.
+
 """
 import argparse
 import json
