@@ -16,7 +16,7 @@
     "alerta_id": "A-002",
     "cliente_id": "C-1002",
     "regla_disparada": "estructuracion",
-    "descripcion_regla": "4 depósitos en efectivo de USD 950-980 en 3 días hábiles (justo debajo del umbral de reporte de USD 1000)",
+    "descripcion_regla": "4 depósitos en efectivo de USD 950-980 en 3 días hábiles",
     "transacciones": [
       {"fecha": "2026-07-01", "monto_usd": 970, "tipo": "deposito_efectivo"},
       {"fecha": "2026-07-01", "monto_usd": 950, "tipo": "deposito_efectivo"},
@@ -39,7 +39,7 @@
     ],
     "dificultad": "dificil",
     "accion_esperada": "pedir_info",
-    "nota_eval": "podría ser pago a proveedores por temporada alta (importadora) o fraccionamiento de pago a terceros; no hay evidencia suficiente para decidir sin más contexto — el agente debería pedir info, no decidir"
+    "nota_eval": "podría ser pago a proveedores por temporada alta o fraccionamiento de pago a terceros; no hay evidencia suficiente para decidir sin más contexto — el agente debería pedir info, no decidir"
   },
   {
     "alerta_id": "A-004",
@@ -51,7 +51,7 @@
     ],
     "dificultad": "dificil",
     "accion_esperada": "escalar_sar",
-    "nota_eval": "caso trampa: cliente de bajo riesgo aparente (estudiante) pero monto muy incoherente con perfil + 2 alertas previas + origen extranjero no declarado. Un agente 'perezoso' podría cerrar por confiar en el perfil declarado en vez de mirar la evidencia"
+    "nota_eval": "cliente de bajo riesgo aparente pero monto muy incoherente con perfil + 2 alertas previas + origen extranjero no declarado."
   },
   {
     "alerta_id": "A-005",
@@ -65,7 +65,7 @@
     ],
     "dificultad": "facil",
     "accion_esperada": "cerrar",
-    "nota_eval": "montos bajos, remitentes identificables como familiares, cliente antiguo sin historial de alertas, patrón compatible con colecta familiar"
+    "nota_eval": "montos bajos, remitentes identificables como familiares, cliente antiguo sin historial de alertas"
   },
   {
     "alerta_id": "A-006",
@@ -81,6 +81,6 @@
     ],
     "dificultad": "facil",
     "accion_esperada": "bloquear_cuenta",
-    "nota_eval": "estructuración reincidente (3ra vez con el mismo patrón, ya tiene 2 alertas previas) — alta gravedad que amerita bloqueo preventivo de cuenta además de reporte, no alcanza con escalar_sar"
+    "nota_eval": "estructuración reincidente (3ra vez con el mismo patrón, ya tiene 2 alertas previas), alta gravedad que amerita bloqueo preventivo de cuenta además de reporte, no alcanza con escalar_sar"
   }
 ]
