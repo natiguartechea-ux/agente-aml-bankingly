@@ -4,23 +4,19 @@ Set de evaluación.
 Métrica definida ANTES de medir:
   - Accuracy simple: % de casos donde accion_propuesta == accion_esperada.
   - Se mide por separado accuracy en casos "facil" vs. "dificil", porque son
-    tipos de error distintos (ver umbral abajo).
+    tipos de error distintos.
   - Métrica secundaria, más importante que accuracy global: tasa de FALSOS
-    NEGATIVOS EN ESCALAMIENTO — casos donde accion_esperada = escalar_sar y
-    el agente propuso cerrar. Este es el error más caro del sistema (dejar
-    pasar actividad sospechosa), así que se reporta aparte.
+    NEGATIVOS EN ESCALAMIENTO, casos donde accion_esperada = escalar_sar y
+    el agente propuso cerrar. Este es el error más caro del sistema, así que se reporta aparte.
   - Métrica secundaria adicional: tasa de FALSOS NEGATIVOS EN BLOQUEO —
     casos donde accion_esperada = bloquear_cuenta y el agente propuso otra
-    cosa. bloquear_cuenta es la acción reservada para alta gravedad
-    (ej. estructuración reincidente), así que no proponerla cuando
-    correspondía es, al menos, tan caro como el falso negativo de
-    escalamiento.
+    cosa. 
 
 Umbral definido ANTES de medir:
   - Accuracy >= 80% en casos "facil" para considerar el prototipo viable.
   - CERO falsos negativos en escalamiento (accion_esperada=escalar_sar,
     predicho=cerrar) tolerados en v1 — cualquier caso así es un fallo crítico
-    a analizar, no un promedio a mejorar.
+    a analizar.
   - CERO falsos negativos en bloqueo (accion_esperada=bloquear_cuenta,
     predicho≠bloquear_cuenta) tolerados en v1, con el mismo criterio.
   - Casos "dificil" se reportan pero NO cuentan para el umbral de Go/No-Go:
