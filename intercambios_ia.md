@@ -465,7 +465,7 @@
 
 ## (b) Intercambio donde el modelo devolvió algo incorrecto y cómo lo detectaste
 
-**Contexto:** al pedirle a la IA (en esta conversación, usada como herramienta de desarrollo) el código del agente, generó `src/agent.py` con dos modos: uno real (llamando a la API de Claude) y uno "mock" — una heurística simple basada en reglas, pensada para poder correr el flujo y los evals sin necesitar una API key. Esa heurística resultó tener un error de lógica real.
+**Contexto:** al pedirle a la IA el código del agente, generó `src/agent.py` con dos modos: uno real (llamando a la API de Claude) y uno "mock" — una heurística simple basada en reglas, pensada para poder correr el flujo y los evals sin necesitar una API key. Esa heurística resultó tener un error de lógica real.
 
 **Prompt que llevó a la pieza con el error:**
 > "Necesito el código para el agente"
