@@ -5,14 +5,13 @@ Regla de diseño del ejercicio: "toda acción con efectos debe ser propuesta
 por el agente y aprobada por el analista humano antes de ejecutarse, con ese
 control garantizado por el código, no por el prompt".
 
-Cómo se garantiza acá, en código (no en el prompt):
+Cómo se garantiza acá:
   1. El modelo (src/agent.py) SOLO tiene acceso a la tool
-     `proponer_resolucion_alerta`, que no tiene ningún efecto — solo devuelve
-     datos. No existe ninguna tool `cerrar_alerta()` ni `marcar_sar()`
+     `proponer_resolucion_alerta`, que no tiene ningún efecto. No existe ninguna tool `cerrar_alerta()` ni `marcar_sar()`
      expuesta al modelo.
   2. validar_propuesta() rechaza cualquier propuesta que no cumpla el schema
-     mínimo (acción válida, evidencia no vacía) ANTES de que el analista la
-     vea. Esto es un chequeo de código sobre la salida del modelo.
+     mínimo ANTES de que el analista la
+     vea. 
   3. ejecutar_decision() es la ÚNICA función de todo el sistema que puede
      mutar el estado de una alerta a 'resuelta'. Requiere un `decision`
      explícito que en el flujo real solo puede originarse en la interacción
