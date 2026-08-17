@@ -1,5 +1,5 @@
 """
-Agente de triage AML.
+Agente AML.
 
 Lo que decide el modelo: interpretar la alerta + contexto del cliente,
 redactar evidencia y justificación, y recomendar UNA acción entre
@@ -10,8 +10,7 @@ Lo que el modelo NO puede hacer: ejecutar nada. Su única "tool" disponible
 datos que después pasan por src/gate.py.
 
 Modo --mock: heurística simple basada en reglas, para poder correr y probar
-todo el flujo (incluyendo evals) sin necesitar ANTHROPIC_API_KEY. Útil para
-demo rápida y para CI. El modo real usa la API de Claude con tool use.
+todo el flujo (incluyendo evals) sin necesitar ANTHROPIC_API_KEY. El modo real usa la API de Claude con tool use.
 """
 import os
 import json
@@ -37,10 +36,7 @@ TRANSACCIONES RELEVANTES:
 Analizá si la actividad es coherente con el perfil declarado del cliente y su
 historial. Si la evidencia es clara, proponé cerrar o escalar_sar. Si falta
 información para decidir con confianza razonable, proponé pedir_info en vez
-de forzar una decisión. Si la evidencia es de alta gravedad — por ejemplo un
-patrón de estructuración reincidente (el cliente ya tiene alertas previas
-por el mismo tipo de patrón) u otra señal de riesgo inminente que amerite
-congelar la cuenta mientras avanza la investigación — proponé
+de forzar una decisión. Si la evidencia es de alta gravedad, proponé
 bloquear_cuenta en vez de escalar_sar; es una recomendación más severa, no
 un reemplazo del reporte. Fundamentá con evidencia concreta, no opiniones
 genéricas. Usá la tool proponer_resolucion_alerta para tu respuesta.
