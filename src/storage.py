@@ -4,8 +4,7 @@ Persistencia simple en SQLite. Guarda:
 - cada propuesta que generó el agente
 - cada decisión humana, con timestamp, para auditoría
 
-Esto es lo que en la sesión en vivo se muestra como "trazabilidad completa":
-cualquier efecto ejecutado es reconstruible desde acá.
+
 """
 import sqlite3
 import json
