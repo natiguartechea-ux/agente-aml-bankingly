@@ -11,7 +11,7 @@
     "cliente_id": "C-1002",
     "nombre": "María Fernández",
     "antiguedad_meses": 2,
-    "perfil_declarado": "cuentapropista, ingreso mensual declarado USD 3000",
+    "perfil_declarado": "contractor, ingreso mensual declarado USD 3000",
     "pais": "UY",
     "alertas_previas": 1
   },
@@ -43,7 +43,7 @@
     "cliente_id": "C-1006",
     "nombre": "Roberto Méndez",
     "antiguedad_meses": 4,
-    "perfil_declarado": "cuentapropista, ingreso mensual declarado USD 1500",
+    "perfil_declarado": "contractor, ingreso mensual declarado USD 1500",
     "pais": "UY",
     "alertas_previas": 2
   }
