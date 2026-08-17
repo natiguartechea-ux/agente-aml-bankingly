@@ -1,8 +1,7 @@
 """
 Modelos de datos del prototipo.
 
-La pieza clave acá es PROPUESTA_SCHEMA: es el contrato estructurado que el
-modelo debe respetar. El modelo NUNCA devuelve una función ejecutable,
+PROPUESTA_SCHEMA: El modelo NUNCA devuelve una función ejecutable,
 siempre devuelve datos que pasan por el gate de código antes de convertirse
 en un efecto real. Ver src/gate.py.
 """
